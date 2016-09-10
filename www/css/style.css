@@ -1,1 +1,9 @@
-/* Empty. Add your own CSS if you like */
+.botones{
+	width: 30%;
+	height: 30%;
+	margin: 3%;
+}
+
+h2{
+	text-align: center;
+}

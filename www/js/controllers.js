@@ -1,28 +1,89 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ngCordova'])
 
-.controller('DashCtrl', function($scope) {})
+.controller('DashCtrl', function($scope, $cordovaVibration, $cordovaFlashlight, $cordovaNativeAudio) {
+ $scope.Vibrar = function(){
+    try{
+      $cordovaVibration.vibrate(100000);
+    }
+    catch (error){
+      console.log("La PC no vibra");
+    }
+  }
 
-.controller('ChatsCtrl', function($scope, Chats) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
+ $scope.PararVibrar = function (){
+    try{
+      $cordovaVibration.cancelVibration();
+    }
+    catch (error){
+      console.log("La PC no vibra");
+    }
+  }
 
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  };
+  $scope.EncenderLinterna = function(){
+    try{
+      $cordovaFlashlight.switchOn();
+    }
+    catch (error){
+      console.log("La PC no tiene linterna");
+    }
+  }
+
+ $scope.ApagarLinterna = function (){
+    try{
+      $cordovaFlashlight.switchOff();
+    }
+    catch (error){
+      console.log("La PC no tiene linterna");
+    }
+  }
+
+  $cordovaNativeAudio
+    .preloadSimple('sonido1', 'sonido/FX-Impact198.mp3')
+    .then(function (msg) {
+      console.log(msg);
+    }, function (error) {
+      alert(error);
+    });
+
+  $cordovaNativeAudio
+    .preloadSimple('sonido2', 'sonido/FX-Impact219.mp3')
+    .then(function (msg) {
+      console.log(msg);
+    }, function (error) {
+      alert(error);
+    });
+
+  $scope.Sonido1 = function(){
+    try{
+      $cordovaNativeAudio.play('sonido1');
+    }
+    catch (error){
+      alert(error);
+      console.log("Sin musica");
+    }
+  }
+
+   $scope.Sonido2 = function (){
+      try{
+        $cordovaNativeAudio.play('sonido2');
+      }
+      catch (error){
+        alert(error);
+        console.log("Sin música");
+      }
+    }
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
-})
+.controller('BotonesCtrl', function($scope, $cordovaMedia) {
 
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
-});
+  $scope.GuardarSonido = function(sonido){
+    try{
+        var src = "/sonido/FX-Impact219.mp3";
+        $cordovaMedia.newMedia(src).play();
+      }
+    catch (error){
+        console.log("Sin música");
+    }
+  }
+
+})
